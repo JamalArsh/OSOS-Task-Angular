@@ -1,4 +1,71 @@
-<!-- NG-ZORRO -->
-<a href="https://github.com/NG-ZORRO/ng-zorro-antd" target="_blank" style="display: flex;align-items: center;justify-content: center;height: 100%;width: 100%;">
-  <img height="300" src="https://img.alicdn.com/tfs/TB1X.qJJgHqK1RjSZFgXXa7JXXa-89-131.svg">
-</a>
+<form
+  nz-form
+  nzLayout="vertical"
+  class="date-form"
+  [formGroup]="dateForm"
+  (ngSubmit)="onSubmit()"
+>
+  <div nz-row nzGutter="8">
+    <div nz-col nzXs="24" nzSm="24" nzMd="12">
+      <nz-form-item>
+        <nz-form-label nzFor="start-date">Start Date</nz-form-label>
+        <nz-form-control nzErrorTip="Starting date is required">
+          <nz-date-picker
+            formControlName="date"
+            nzAllowClear
+            nzSize="large"
+            name="start-date"
+            id="start-date"
+          ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzXs="24" nzSm="24" nzMd="12">
+      <nz-form-item>
+        <nz-form-label nzFor="days">Number of days to complete</nz-form-label>
+        <nz-form-control nzErrorTip="Number of days is required">
+          <nz-input-number
+            nzAllowClear
+            formControlName="days"
+            id="days"
+            name="days"
+            [nzMin]="1"
+            [nzStep]="1"
+            nzSize="large"
+          ></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzSpan="24">
+      <button nz-button nzType="primary" type="submit" nzSize="large">
+        Submit
+      </button>
+    </div>
+  </div>
+</form>
+
+<div class="details-container">
+  @if (endResponse) {
+  <div class="details-header">
+    <div class="details-header-section">
+      <div class="box box-1"></div>
+      <div>Workable days</div>
+    </div>
+    <div class="details-header-section">
+      <div class="box box-2"></div>
+      <div>Non-Workable days</div>
+    </div>
+    <div class="details-header-section">
+      <div class="box box-3"></div>
+      <div>Holidays</div>
+    </div>
+  </div>
+  <h2>Task end date: {{ endResponse.endDate | date : "yyyy-MM-dd" }}</h2>
+  @for (item of endResponse.dayDetails; track $index) {
+  <app-day-details-card
+    [date]="item.date"
+    [dayOfWeek]="item.dayOfWeek"
+    [isHoliday]="item.isHoliday"
+  ></app-day-details-card>
+  } }
+</div>

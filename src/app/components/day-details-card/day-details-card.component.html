@@ -1,0 +1,15 @@
+<div
+  class="main-container"
+  [ngClass]="{
+    weekend: dayOfWeek === 'Saturday' || dayOfWeek === 'Sunday' || isHoliday,
+    weekday: dayOfWeek !== 'Saturday' && dayOfWeek !== 'Sunday' && !isHoliday
+  }"
+>
+  <div>
+    <h3>Date: {{ date | date : "yyyy-MM-dd" }}</h3>
+    <h4>Day: {{ dayOfWeek }}</h4>
+  </div>
+  @if (isHoliday) {
+  <span class="holiday-indicator"></span>
+  }
+</div>

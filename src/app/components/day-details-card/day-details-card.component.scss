@@ -1,0 +1,26 @@
+.main-container {
+  max-width: 500px;
+  margin: 10px auto;
+  padding: 8px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.holiday-indicator {
+  display: inline-block;
+  width: 20px;
+  background-color: #51050f;
+  border-radius: 5px;
+}
+
+.weekend {
+  border: 2px solid red;
+  background-color: tomato;
+}
+
+.weekday {
+  border: 2px solid blue;
+  background-color: lightblue;
+}
