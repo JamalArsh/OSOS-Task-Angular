@@ -1,0 +1,62 @@
+.date-form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 2rem 12px;
+}
+
+nz-date-picker {
+  width: 100%;
+}
+
+nz-input-number {
+  width: 100%;
+}
+
+.details-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+.details-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+
+  @media screen and (max-width: 473px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+.details-header-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px;
+
+  .box {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+  }
+
+  .box-1 {
+    border: 2px solid blue;
+    background-color: lightblue;
+  }
+
+  .box-2 {
+    border: 2px solid red;
+    background-color: tomato;
+  }
+
+  .box-3 {
+    border: 2px solid #51050f;
+    background-color: #51050f;
+  }
+}
