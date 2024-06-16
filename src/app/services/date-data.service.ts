@@ -15,9 +15,6 @@ export class DateDataService {
   getEndDate(dateRequestDto: DateRequestDto): Observable<DateResponseDto> {
     const url = this.baseUrl + '/api/date';
 
-    console.log(url);
-    console.log(dateRequestDto);
-
     return this.http.post<DateResponseDto>(url, dateRequestDto);
   }
 }

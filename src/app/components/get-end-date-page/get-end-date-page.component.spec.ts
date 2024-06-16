@@ -78,27 +78,12 @@ describe('GetEndDatePageComponent', () => {
     component.dateForm.controls['date'].setValue(new Date('2024-06-16'));
     component.dateForm.controls['days'].setValue(1);
 
-    spyOn(console, 'log');
-    spyOn(component, 'getEndDate');
+    const spy = spyOn(component, 'getEndDate');
 
     component.onSubmit();
 
-    expect(console.log).toHaveBeenCalledWith({
-      date: new Date('2024-06-16'),
-      days: 1,
-    });
-
-    expect(component.getEndDate).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
-
-  // it('should call getEndDate service method', () => {
-  //   const date = new Date('2024-06-16');
-  //   const days = 1;
-
-  //   component.getEndDate(date, days);
-
-  //   expect(mockDateDataService.getEndDate).toHaveBeenCalledWith(date, days);
-  // });
 
   it('should handle getEndDate success', () => {
     const mockResponse = {
@@ -115,7 +100,7 @@ describe('GetEndDatePageComponent', () => {
     expect(component.endResponse).toBeDefined();
 
     expect(mockDateDataService.getEndDate).toHaveBeenCalledWith({
-      startDate: '2024-06-17T00:00:00.000Z',
+      startDate: '2024-06-17',
       workingDays: 3,
     });
 

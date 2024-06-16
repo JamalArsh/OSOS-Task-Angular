@@ -12,7 +12,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { DateDataService } from '../../services/date-data.service';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import { DateResponseDto } from '../../dtos/date-response-dto';
 import { DateRequestDto } from '../../dtos/date-request-dto';
 import { CommonModule } from '@angular/common';
@@ -47,6 +47,7 @@ export class GetEndDatePageComponent implements OnInit, OnDestroy {
   endResponse: DateResponseDto | null | undefined;
   loading = false;
   public loadingSubscription!: Subscription;
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
@@ -54,7 +55,8 @@ export class GetEndDatePageComponent implements OnInit, OnDestroy {
     private notification: NzNotificationService
   ) {}
   ngOnDestroy(): void {
-    // this.dateDataService.getEndDate().unsubscribe();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   ngOnInit(): void {
@@ -66,7 +68,6 @@ export class GetEndDatePageComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     if (this.dateForm.valid) {
-      console.log(this.dateForm.value);
       this.getEndDate(this.dateForm.value.date, this.dateForm.value.days);
     } else {
       Object.values(this.dateForm.controls).forEach((control) => {
@@ -79,36 +80,29 @@ export class GetEndDatePageComponent implements OnInit, OnDestroy {
   }
 
   getEndDate(startDate: Date, workingDays: number): void {
-    // start Loading
     this.loading = true;
-
-    const d = new Date(startDate);
-    d.setHours(0, 0, 0, 0);
-
-    const timeZoneOffset = d.getTimezoneOffset() * 60000;
-    const adjustedDate = new Date(d.getTime() - timeZoneOffset);
-
-    const finalDate =
-      adjustedDate.toISOString().split('T')[0] + 'T00:00:00.000Z';
+    const finalDate = startDate.toISOString().split('T')[0];
 
     const dateRequest: DateRequestDto = {
       startDate: finalDate,
       workingDays,
     };
-    this.dateDataService.getEndDate(dateRequest).subscribe({
-      next: (res) => {
-        console.log(res);
-        this.endResponse = res;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.log(err);
-        this.notification.error(
-          'Error',
-          'Error while getting response from server'
-        );
-        this.loading = false;
-      },
-    });
+    this.dateDataService
+      .getEndDate(dateRequest)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe({
+        next: (res) => {
+          this.endResponse = res;
+          this.loading = false;
+        },
+        error: (err) => {
+          console.log(err);
+          this.notification.error(
+            'Error',
+            'Error while getting response from server'
+          );
+          this.loading = false;
+        },
+      });
   }
 }
